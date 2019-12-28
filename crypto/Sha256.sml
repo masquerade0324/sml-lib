@@ -1,4 +1,4 @@
-structure Sha256 :> SHA256 =
+structure Sha256 :> SHA =
 struct
   structure W    = Word
   structure W8   = Word8
@@ -128,7 +128,7 @@ struct
         let
           val tmp1 = ref 0w0
           val tmp2 = ref 0w0
-          val t     = ref 0
+          val t    = ref 0
         in
           while !t < 64 do (
             tmp1 := !a7 ++ usig1 (!a4) ++ ch (!a4, !a5, !a6) ++
@@ -160,14 +160,8 @@ struct
   fun hash (msg : W8V.vector) : W32.word vector =
     let
       val msgs = parse (pad msg)
-      val n = Vector.length msgs
-      val i = ref 0
-      val h = ref h0
     in
-      while !i < n do (
-        h := hashOneStep (Vector.sub (msgs, !i), !h);
-        i := !i + 1);
-      !h
+      Vector.foldl hashOneStep h0 msgs
     end
 
   fun hashW8 msg =
