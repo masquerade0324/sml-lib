@@ -13,8 +13,11 @@ struct
            else 0wxCA62C1D6
 
   val h0 : W32.word vector =
-    Vector.fromList [0wx67452301, 0wxEFCDAB89, 0wx98BADCFE,
-                     0wx10325476, 0wxC3D2E1F0]
+    Vector.fromList [0wx67452301,
+                     0wxEFCDAB89,
+                     0wx98BADCFE,
+                     0wx10325476,
+                     0wxC3D2E1F0]
 
   val op ++ = W32.+
   val op >> = W32.>>
@@ -34,8 +37,6 @@ struct
 
   fun rotr (x, n) = (x >> W.fromInt n) orb (x << W.fromInt (32 - n))
   fun rotl (x, n) = (x << W.fromInt n) orb (x >> W.fromInt (32 - n))
-  fun shr  (x, n) = x >> W.fromInt n
-  fun shl  (x, n) = x << W.fromInt n
 
   fun ch     (x, y, z) = (x andb y) xorb (notb x andb z)
   fun parity (x, y, z) = x xorb y xorb z
@@ -117,7 +118,7 @@ struct
           val tmp = ref 0w0
           val t   = ref 0
         in
-          while !t < 64 do (
+          while !t < 80 do (
             tmp := rotl (!a0, 5) ++ f (!t) (!a1, !a2, !a3) ++
                    !a4 ++ k (!t) ++ Array.sub (msgSched, !t);
             a4 := !a3;
